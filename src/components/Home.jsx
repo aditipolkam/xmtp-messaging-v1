@@ -9,6 +9,7 @@ import BackButton from "./BackButton";
 import MessageList from "./MessageList";
 import ConversationList from "./ConversationList";
 import useStreamConversations from "../hooks/useStreamConversations";
+import Attachment from "./Attachment";
 
 const Home = () => {
   const [providerState] = useContext(XmtpContext);
@@ -88,6 +89,8 @@ const Home = () => {
                 setMsgTxt={setMsgTxt}
                 sendNewMessage={sendNewMessage}
               />
+              <hr/>
+              <Attachment/>
             </>
           )}
         </div>

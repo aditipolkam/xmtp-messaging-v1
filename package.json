@@ -4,11 +4,15 @@
   "type": "module",
   "private": true,
   "dependencies": {
+    "@thirdweb-dev/react": "^3.14.22",
+    "@xmtp/content-type-remote-attachment": "^1.0.7",
     "@xmtp/xmtp-js": "^7.10.0",
     "buffer": "^6.0.3",
     "ethers": "^5.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "web-streams-polyfill": "^3.2.1",
+    "web3.storage": "^4.5.5",
     "web3modal": "^1.9.9"
   },
   "devDependencies": {
