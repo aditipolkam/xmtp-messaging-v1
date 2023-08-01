@@ -7,6 +7,22 @@ import {
   RemoteAttachmentCodec,
 } from "@xmtp/content-type-remote-attachment";
 import { WalletContext } from '../contexts/WalletContext';
+class Upload {
+  constructor(name, data) {
+    this.name = name;
+    this.data = data;
+  }
+
+  stream() {
+    const self = this;
+    return new ReadableStream({
+      start(controller) {
+        controller.enqueue(Buffer.from(self.data));
+        controller.close();
+      },
+    });
+  }
+}
 
 const Attachment = () => {
   const {signer} = useContext(WalletContext)
@@ -54,7 +70,10 @@ const Attachment = () => {
 
         console.log("encrypted file")
 
-        const cid = await uploadWithWeb3(encryptedEncoded.payload, "SoCon1")
+        const upload = new Upload("uploadIdOfYourChoice", encryptedEncoded.payload);
+        console.log("converted file")
+
+        const cid = await uploadWithWeb3(upload)
         console.log(cid);
         const url = `https://${cid}.ipfs.w3s.link/SoCon1`;
         console.log("file uploaded to web3.storage")
