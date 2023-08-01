@@ -1,7 +1,11 @@
 import React, { useContext } from 'react'
 import uploadWithWeb3 from '../utils/uploadWithWeb3';
 import { useState } from 'react';
+import { XmtpContext } from "../contexts/XmtpContext";
 import { Client } from '@xmtp/xmtp-js';
+import useSendMessage from '../hooks/useSendMessage';
+import useStreamConversations from '../hooks/useStreamConversations';
+import { ContentTypeRemoteAttachment } from '@xmtp/content-type-remote-attachment';
 import {
   AttachmentCodec,
   RemoteAttachmentCodec,
@@ -24,19 +28,23 @@ class Upload {
   }
 }
 
-const Attachment = () => {
+const Attachment = ({selectedConvo}) => {
   const {signer} = useContext(WalletContext)
+  const [providerState] = useContext(XmtpContext);
+  const { client } = providerState;
     const [file, setFile] = useState(null);
+    
+
     const handleFileChange = (e) => {
         setFile(e.target.files[0])
     }
 
     const handleUploadAndSend = async() =>{
-      const xmtp = await Client.create(signer, { env: "dev" });
+      //const xmtp = await Client.create(signer, { env: "dev" });
       // Register the codecs. AttachmentCodec is for local attachments (<1MB)
-      xmtp.registerCodec(new AttachmentCodec());
+      client.registerCodec(new AttachmentCodec());
       //RemoteAttachmentCodec is for remote attachments (>1MB) using thirdweb storage
-      xmtp.registerCodec(new RemoteAttachmentCodec());
+      client.registerCodec(new RemoteAttachmentCodec());
               
       console.log("created xmtp client")
 
@@ -91,6 +99,7 @@ const Attachment = () => {
         };
         console.log("created remote attachment")
 
+        const conversation = await client.conversations.newConversation(selectedConvo);
         await conversation.send(remoteAttachment, {
           contentType: ContentTypeRemoteAttachment,
         });

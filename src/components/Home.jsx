@@ -90,7 +90,7 @@ const Home = () => {
                 sendNewMessage={sendNewMessage}
               />
               <hr/>
-              <Attachment/>
+              <Attachment selectedConvo={selectedConvo}/>
             </>
           )}
         </div>
