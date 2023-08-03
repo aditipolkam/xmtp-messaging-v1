@@ -2,16 +2,13 @@ import React, { useContext } from 'react'
 import uploadWithWeb3 from '../utils/uploadWithWeb3';
 import { useState } from 'react';
 import { XmtpContext } from "../contexts/XmtpContext";
-import { Client } from '@xmtp/xmtp-js';
-import useSendMessage from '../hooks/useSendMessage';
-import useStreamConversations from '../hooks/useStreamConversations';
 import { ContentTypeRemoteAttachment } from '@xmtp/content-type-remote-attachment';
 import {
   AttachmentCodec,
   RemoteAttachmentCodec,
 } from "@xmtp/content-type-remote-attachment";
 import { WalletContext } from '../contexts/WalletContext';
-class Upload {
+class Upload{
   constructor(name, data) {
     this.name = name;
     this.data = data;
@@ -64,12 +61,12 @@ const Attachment = ({selectedConvo}) => {
 
         // Local file details
         const attachment = {
-          filename: "Socon1",
-          mimeType: "png",
+          filename: file.name,
+          mimeType: file.type,
           data: new Uint8Array(data),
         };
 
-        console.log("created attachment")
+        console.log("created attachment",attachment)
 
         const encryptedEncoded = await RemoteAttachmentCodec.encodeEncrypted(
           attachment,
@@ -83,7 +80,7 @@ const Attachment = ({selectedConvo}) => {
 
         const cid = await uploadWithWeb3(upload)
         console.log(cid);
-        const url = `https://${cid}.ipfs.w3s.link/SoCon1`;
+        const url = `https://${cid}.ipfs.w3s.link/uploadIdOfYourChoice`;
         console.log("file uploaded to web3.storage")
         console.log(url)
 
